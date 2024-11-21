@@ -6,11 +6,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
+//para los roles con Spatie
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+//para el plugin media-library
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
+
+class User extends Authenticatable implements HasMedia
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory,
+    //para los roles con Spatie
+    HasRoles,
+    Notifiable;
+    //para plugin media-library
+    use InteractsWithMedia;
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +32,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'lastName',
         'email',
+        'phoneNumber',
         'password',
     ];
 
@@ -45,4 +60,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+        ->width(50)
+        ->height(50)
+        ->sharpen(10);
+
+    }
+
+public function registerMediaCollections(): void
+{
+    $this ->addMediaCollection('avatar')->useDisk('public')->singleFile();
+}
+
 }

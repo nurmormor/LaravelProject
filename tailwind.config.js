@@ -14,6 +14,10 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                teal: '#22B3B2', // Color para el logo
+                darkTeal: '#0A2827' // Color para el formulario
+            },
         },
     },
 

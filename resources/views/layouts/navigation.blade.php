@@ -1,100 +1,57 @@
-<nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
-    <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
-                    </a>
-                </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
-                </div>
-            </div>
+<aside id="navigation-menu" class="fixed top-20 left-0 h-full bg-teal p-4 flex-col items-center justify-center hidden">
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                            <div>{{ Auth::user()->name }}</div>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
+        <ul class="space-y-9">
 
-                    <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.edit')">
-                            {{ __('Profile') }}
-                        </x-dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-dropdown-link :href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
-                            </x-dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-dropdown>
-            </div>
-
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            <!-- Icono 1 - Siempre lleva a la página de login si el usuario no está logueado -->
+            <li>
+                <a href="{{ Auth::check() ? route('dashboard') : route('login') }}"  class="text-white flex justify-center items-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 36 35" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M31.2689 0H4.73127C2.64618 0 0.940186 1.70599 0.940186 3.79109V30.3287C0.940186 32.4138 2.64618 34.1198 4.73127 34.1198H31.2689C33.354 34.1198 35.06 32.4138 35.06 30.3287V3.79109C35.06 1.70599 33.354 0 31.2689 0ZM4.73127 30.3287V3.79109H16.1045V30.3287H4.73127ZM31.2689 30.3287H19.8956V17.0599H31.2689V30.3287ZM31.2689 13.2688H19.8956V3.79109H31.2689V13.2688Z"
+                            fill="white" />
                     </svg>
-                </button>
-            </div>
-        </div>
-    </div>
+                </a>
+            </li>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
+            <!-- Icono 2 - Enlace a la vista de vuelos (accesible para todos) -->
+            <li>
+                <a href="{{ route('flights') }}"  class="text-white flex justify-center items-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 36 36" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M35.9763 2.04931C35.7191 2.77065 35.5003 3.50776 35.1978 4.2084C34.716 5.32915 34.0178 6.34381 33.1432 7.19426C31.8119 8.49503 30.5111 9.82635 29.1866 11.136C29.0931 11.2208 29.0194 11.3252 28.9707 11.4417C28.922 11.5581 28.8995 11.6839 28.9048 11.81C28.9127 18.647 28.915 25.4842 28.9117 32.3218C28.9117 32.7002 28.9117 33.0737 28.6161 33.3684C28.0839 33.9005 27.2296 33.7626 26.8955 33.0471C26.6383 32.4992 26.4393 31.9227 26.2195 31.3581C24.6487 27.3355 23.0786 23.313 21.5091 19.2905C21.4727 19.1919 21.4293 19.1052 21.3751 18.981C21.2677 19.0796 21.178 19.1545 21.1012 19.2343C18.3603 21.9738 15.6222 24.7159 12.8866 27.4607C12.7507 27.6089 12.6709 27.7999 12.6609 28.0007C12.6461 30.4367 12.6511 32.8717 12.6511 35.3067C12.6511 35.3885 12.6511 35.4713 12.6511 35.5531C12.6609 35.7797 12.5762 35.9473 12.3446 35.9975C12.113 36.0478 11.9751 35.899 11.8952 35.7019C11.5852 34.9089 11.2761 34.115 10.968 33.3201C10.4516 31.9937 9.93424 30.6673 9.4159 29.3409C9.22374 28.8482 8.90643 28.7684 8.52901 29.1172C8.04713 29.5666 7.39379 29.5804 6.95231 29.1497C6.51084 28.7191 6.50591 28.0756 6.95231 27.5799C7.32579 27.17 7.25386 26.8675 6.73256 26.6605L0.479992 24.1969C0.404113 24.1674 0.300642 24.1585 0.257283 24.0984C0.158739 23.9723 0.0050019 23.8097 0.025696 23.6875C0.0463901 23.5653 0.239545 23.449 0.380462 23.3771C0.479005 23.3298 0.610046 23.3623 0.727312 23.3623C3.20962 23.3623 5.69193 23.3623 8.17326 23.3544C8.36427 23.3542 8.54916 23.2869 8.69554 23.1642C11.4449 20.4326 14.1874 17.6947 16.9229 14.9506C16.9643 14.9092 17.0027 14.8659 17.0727 14.789C16.9308 14.7289 16.8106 14.6737 16.6884 14.6254L3.30621 9.33659C2.96229 9.2006 2.64893 9.0321 2.49619 8.66453C2.20647 7.96881 2.65484 7.27802 3.45698 7.19525C3.5841 7.18243 3.71417 7.19033 3.84327 7.19033C10.6454 7.19033 17.4475 7.19295 24.2496 7.1982C24.3922 7.20369 24.5342 7.17765 24.6655 7.12195C24.7968 7.06625 24.9143 6.98226 25.0094 6.87597C26.3979 5.4668 27.7686 4.04285 29.2083 2.68098C30.648 1.31911 32.341 0.439117 34.3079 0.155312C35.2293 0.0212932 35.5683 0.253847 35.9714 1.07077L35.9763 2.04931Z"
+                            fill="white" />
+                    </svg>
+                </a>
+            </li>
 
-        <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800 dark:text-gray-200">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+            <!-- Icono 3 --->
+            <li>
+                <a href="{{ Auth::check() ? route('sales') : route('login') }}"  class="text-white flex justify-center items-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 36 35" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M34.9164 21.7354L13.3957 0.21464C13.1193 -0.0617402 12.6711 -0.0617402 12.3946 0.21464L10.8062 1.80305C10.6004 2.00893 10.5415 2.31981 10.6579 2.58659C11.0612 3.51113 11.2028 4.52664 11.0674 5.52335C10.9056 6.71484 10.3693 7.79522 9.51688 8.64776C8.66434 9.50021 7.58396 10.0365 6.39247 10.1983C5.39584 10.3336 4.38033 10.192 3.45578 9.78873C3.189 9.67238 2.87812 9.73123 2.67224 9.93703L1.08375 11.5254C0.80737 11.8019 0.80737 12.2501 1.08375 12.5265L22.6045 34.0472C22.8809 34.3236 23.3292 34.3236 23.6055 34.0472L25.1939 32.4589C25.3997 32.2529 25.4586 31.942 25.3422 31.6753C24.939 30.7508 24.7973 29.7352 24.9328 28.7386C25.0946 27.5471 25.6308 26.4667 26.4833 25.6142C27.3358 24.7617 28.4162 24.2255 29.6077 24.0637C30.6043 23.9283 31.6198 24.0699 32.5443 24.4732C32.8112 24.5896 33.1221 24.5308 33.3279 24.3249L34.9163 22.7366C35.1929 22.46 35.1929 22.0118 34.9164 21.7354ZM26.6231 19.9042L20.7733 25.754C20.5339 25.9933 20.1459 25.9933 19.9066 25.754L9.37722 15.2243C9.13788 14.9851 9.13788 14.5969 9.37722 14.3577L15.2269 8.50794C15.4663 8.2686 15.8544 8.2686 16.0936 8.50794L26.6232 19.0374C26.8625 19.2768 26.8625 19.6649 26.6231 19.9042Z"
+                            fill="white" />
+                    </svg>
+                </a>
+            </li>
 
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
+            <!-- Icono 4 -->
+            <li>
+                <a href="{{ Auth::check() ? route('users') : route('login') }}"  class="text-white flex justify-center items-center">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 50 35" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M17.6613 21.6589C11.9371 21.6589 0.53772 24.521 0.53772 30.2207V34.5016H34.7848V30.2207C34.7848 24.521 23.3854 21.6589 17.6613 21.6589ZM6.26188 29.6092C8.31671 28.1903 13.2825 26.5514 17.6613 26.5514C22.04 26.5514 27.0058 28.1903 29.0607 29.6092H6.26188ZM17.6613 17.378C22.3825 17.378 26.2231 13.5375 26.2231 8.81627C26.2231 4.09506 22.3825 0.254486 17.6613 0.254486C12.9401 0.254486 9.0995 4.09506 9.0995 8.81627C9.0995 13.5375 12.9401 17.378 17.6613 17.378ZM17.6613 5.14693C19.6916 5.14693 21.3306 6.7859 21.3306 8.81627C21.3306 10.8466 19.6916 12.4856 17.6613 12.4856C15.6309 12.4856 13.9919 10.8466 13.9919 8.81627C13.9919 6.7859 15.6309 5.14693 17.6613 5.14693ZM34.8827 21.8057C37.7203 23.8605 39.6773 26.6003 39.6773 30.2207V34.5016H49.4622V30.2207C49.4622 25.2793 40.9004 22.4662 34.8827 21.8057ZM32.3386 17.378C37.0598 17.378 40.9004 13.5375 40.9004 8.81627C40.9004 4.09506 37.0598 0.254486 32.3386 0.254486C31.0177 0.254486 29.7945 0.572495 28.6693 1.11066C30.2104 3.2878 31.1155 5.95419 31.1155 8.81627C31.1155 11.6783 30.2104 14.3447 28.6693 16.5219C29.7945 17.06 31.0177 17.378 32.3386 17.378Z"
+                            fill="white" />
+                    </svg>
 
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
+                </a>
+            </li>
+        </ul>
 
-                    <x-responsive-nav-link :href="route('logout')"
-                            onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
-            </div>
-        </div>
-    </div>
-</nav>
+    </aside>

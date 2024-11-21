@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Http\Requests\UpdatePhotoRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+
 
 class ProfileController extends Controller
 {
@@ -37,10 +41,23 @@ class ProfileController extends Controller
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
 
+    public function updatePhoto(User $user, UpdatePhotoRequest $UpdatePhotoRequest): RedirectResponse
+    {
+
+        Log::info('controller');
+            //$user->clearMediaCollection('avatar');
+            $user->addMedia($UpdatePhotoRequest ->file('avatar'))
+                 ->toMediaCollection('avatar');
+
+
+        // mensaje de éxito
+        return redirect()->back()->with('status', 'profile image updated');
+    }
+
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy( Request $request): RedirectResponse
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
